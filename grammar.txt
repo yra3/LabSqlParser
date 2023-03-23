@@ -1,0 +1,7 @@
+*Insert: 'INSERT' 'INTO' Identifier 'VALUES' '(' Expression (',' Expression)* ')'
+Expression: Comparison
+Comparison: (Comparison '=')? Additive
+Additive: (Additive '-')? Multiplicative
+Multiplicative: (Multiplicative '%')? Primary | Multiplicative '/' Primary
+Primary:  '(' (Select | Expression) ')' | Number | Identifier
+Select: 'SELECT' Expression ('WHERE' Expression)?
