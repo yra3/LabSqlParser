@@ -11,7 +11,7 @@ sealed class Parser {
 	}
 	#region common
 	Exception MakeError(string message) {
-		throw new InvalidOperationException($"{message} at {pos}");
+		throw new InvalidOperationException($"{message} в {pos}");
 	}
 	void ReadNextToken() {
 		pos++;
