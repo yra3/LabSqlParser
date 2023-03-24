@@ -1,3 +1,4 @@
+using LabSqlParser.Visitors;
 using System;
 using System.Collections.Generic;
 namespace LabSqlParser;
@@ -5,10 +6,12 @@ static class Program {
 	static void Main() {
 		Console.OutputEncoding = System.Text.Encoding.UTF8;
 		TestLexer();
+		TestParser();
 		Console.WriteLine(TaskTree.GetTaskTree().ToFormattedString());
 		var source = @"INSERT INTO a VALUES ( ( SELECT 1 WHERE 2 ) % ( SELECT 3 ) % 4 / 5 / 6 - 7 = 8 , 9 )";
 		var parsedTree = Parser.Parse(Lexer.GetTokens(source));
 		Console.WriteLine(parsedTree.ToFormattedString());
+		new DebugPrintingVisitor(Console.Out, 2).WriteLine(parsedTree);
 	}
 	static void TestLexer() {
 		static void TestTask() {
@@ -53,6 +56,41 @@ static class Program {
 				Console.WriteLine($"Тест {success_cases.Count + i + 1} не пройден. Запрос `{source}` не должен проходить проверку.");
 			}
 			catch (LexerException) {
+				count_passed += 1;
+			}
+		}
+	}
+	static void TestParser() {
+		var count_passed = 0;
+		var success_cases = new List<string> {
+			"INSERT INTO a VALUES ( 9 )",
+			"INSERT INTO a VALUES ( ( SELECT 1 WHERE 2 ) % (( SELECT 3 ) % (4 / 5)) / 6 - (7 = 8) , 9 )",
+			"INSERT INTO a VALUES ( ((((((((((9)))))))))) )",
+		};
+		for (var i = 0; i < success_cases.Count; ++i) {
+			var source = success_cases[i];
+			try {
+				Parser.Parse(Lexer.GetTokens(source));
+				count_passed += 1;
+			}
+			catch (InvalidOperationException e) {
+				Console.WriteLine($"Тест {i + 1} не пройден. Запрос `{source}` Ошибка: {e}");
+			}
+		}
+		var failure_cases = new List<string> {
+			"INSERT INTO a VALUES (  )",
+			"INSERT INTO a VALUES ( ( SELECT 1 2 ) % , 9 )",
+			"INSERT INTO a VALUES ( 3 % , 9 )",
+			"INSERT INTO a VALUES ( def 9 )",
+			"INSERT INTO a VALUES ( , 9 )",
+		};
+		for (var i = 0; i < failure_cases.Count; ++i) {
+			var source = failure_cases[i];
+			try {
+				Parser.Parse(Lexer.GetTokens(source));
+				Console.WriteLine($"Тест {success_cases.Count + i + 1} не пройден. Запрос `{source}` не должен проходить проверку.");
+			}
+			catch (InvalidOperationException) {
 				count_passed += 1;
 			}
 		}

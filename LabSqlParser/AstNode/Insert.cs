@@ -11,4 +11,7 @@ sealed record Insert(
 		formattedString += " )";
 		return formattedString;
 	}
+	public void AcceptVisitor(INodeVisitor visitor) {
+		visitor.VisitInsert(this);
+	}
 }

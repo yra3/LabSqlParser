@@ -5,4 +5,7 @@ sealed record Identifier(
 	public string ToFormattedString() {
 		return Lexeme;
 	}
+	public void AcceptVisitor(INodeVisitor visitor) {
+		visitor.VisitIdentifier(this);
+	}
 }

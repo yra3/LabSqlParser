@@ -36,4 +36,7 @@ sealed record BinaryOperation(
 				throw new System.NotImplementedException($"Не определено форматирование для оператора: {Operator}");
 		}
 	}
+	public void AcceptVisitor(INodeVisitor visitor) {
+		visitor.VisitBinaryOperation(this);
+	}
 }

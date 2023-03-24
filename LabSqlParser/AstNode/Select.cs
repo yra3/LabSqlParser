@@ -10,4 +10,7 @@ sealed record Select(
 		}
 		return formattedString;
 	}
+	public void AcceptVisitor(INodeVisitor visitor) {
+		visitor.VisitSelect(this);
+	}
 }
