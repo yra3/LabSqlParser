@@ -6,6 +6,9 @@ static class Program {
 		Console.OutputEncoding = System.Text.Encoding.UTF8;
 		TestLexer();
 		Console.WriteLine(TaskTree.GetTaskTree().ToFormattedString());
+		var source = @"INSERT INTO a VALUES ( ( SELECT 1 WHERE 2 ) % ( SELECT 3 ) % 4 / 5 / 6 - 7 = 8 , 9 )";
+		var parsedTree = Parser.Parse(Lexer.GetTokens(source));
+		Console.WriteLine(parsedTree.ToFormattedString());
 	}
 	static void TestLexer() {
 		static void TestTask() {

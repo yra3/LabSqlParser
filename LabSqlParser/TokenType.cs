@@ -4,4 +4,5 @@ enum TokenType {
 	Identifier,
 	Punctuator,
 	Number,
+	EndOfFile,
 }
