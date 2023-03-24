@@ -12,16 +12,22 @@ static class TaskTree {
 							new BinaryOperation(
 								new BinaryOperation(
 									new BinaryOperation(
-										new Select(new Number("1"), new Number("2")),
+										new Select(
+											new Number("1"),
+											new Number("2")
+										),
 										BinaryOperationType.Module,
-										new Select(new Number("3"), null)
+										new Select(
+											new Number("3"),
+											null
+										)
 									),
 									BinaryOperationType.Module,
 									new Number("4")
-									),
+								),
 								BinaryOperationType.Division,
 								new Number("5")
-								),
+							),
 							BinaryOperationType.Division,
 							new Number("6")
 						),
@@ -31,7 +37,7 @@ static class TaskTree {
 					BinaryOperationType.Equal,
 					new Number("8")
 				),
-				new Number("9")
+				new Number("9"),
 			}
 		);
 		return insert;
