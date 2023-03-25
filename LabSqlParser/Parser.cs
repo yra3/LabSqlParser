@@ -37,7 +37,7 @@ sealed class Parser {
 	}
 	#endregion
 	public static List<Token> PrepareTokens(IEnumerable<Token> tokens) {
-		return tokens.Where(token => token.Type != TokenType.Spaces).Append(new Token(TokenType.EndOfFile, "\x00")).ToList();
+		return tokens.Where(token => token.Type != TokenType.Spaces).Append(new Token(TokenType.EndOfFile, "")).ToList();
 	}
 	public static Insert Parse(IEnumerable<Token> tokens) {
 		var tokenList = PrepareTokens(tokens);
@@ -81,10 +81,18 @@ sealed class Parser {
 	}
 	IExpression ParseMultiplicative() {
 		var left = ParsePrimary();
-		while (CurrentToken.Lexeme == "/" || CurrentToken.Lexeme == "%") {
-			var binaryOperator = ParseBinaryOperator();
-			var right = ParsePrimary();
-			left = new BinaryOperation(left, binaryOperator, right);
+		while (true) {
+			if (SkipIf("/")) {
+				var right = ParsePrimary();
+				left = new BinaryOperation(left, BinaryOperationType.Division, right);
+				continue;
+			}
+			if (SkipIf("%")) {
+				var right = ParsePrimary();
+				left = new BinaryOperation(left, BinaryOperationType.Module, right);
+				continue;
+			}
+			break;
 		}
 		return left;
 	}
@@ -110,17 +118,6 @@ sealed class Parser {
 			where = ParseExpression();
 		}
 		return new Select(column, where);
-	}
-	BinaryOperationType ParseBinaryOperator() {
-		var binOp = CurrentToken.Lexeme switch {
-			"/" => BinaryOperationType.Division,
-			"%" => BinaryOperationType.Module,
-			"-" => BinaryOperationType.Minus,
-			"=" => BinaryOperationType.Equal,
-			_ => throw MakeError($"Ожидался бинарный оператор. Позиция {pos}"),
-		};
-		ReadNextToken();
-		return binOp;
 	}
 	Identifier ParseIdentifier() {
 		CheckType(TokenType.Identifier);
