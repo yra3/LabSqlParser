@@ -23,6 +23,11 @@ sealed class Parser {
 		}
 		ReadNextToken();
 	}
+	void Expect(TokenType expectedType) {
+		if (CurrentToken.Type != expectedType) {
+			throw MakeError($"Ожидался {expectedType}. Получен {CurrentToken.Type}. {CurrentToken.Lexeme}");
+		}
+	}
 	bool SkipIf(string s) {
 		if (CurrentToken.Lexeme == s) {
 			ReadNextToken();
@@ -120,20 +125,15 @@ sealed class Parser {
 		return new Select(column, where);
 	}
 	Identifier ParseIdentifier() {
-		CheckType(TokenType.Identifier);
+		Expect(TokenType.Identifier);
 		var identifier = new Identifier(CurrentToken.Lexeme);
 		ReadNextToken();
 		return identifier;
 	}
 	Number ParseNumber() {
-		CheckType(TokenType.Number);
+		Expect(TokenType.Number);
 		var number = new Number(CurrentToken.Lexeme);
 		ReadNextToken();
 		return number;
-	}
-	void CheckType(TokenType expectedType) {
-		if (CurrentToken.Type != expectedType) {
-			throw MakeError($"Ожидался {expectedType}. Получен {CurrentToken.Type}. {CurrentToken.Lexeme}");
-		}
 	}
 }
