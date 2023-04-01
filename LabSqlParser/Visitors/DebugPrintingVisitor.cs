@@ -19,7 +19,7 @@ sealed class DebugPrintingVisitor : INodeVisitor {
 		output.Write(s);
 	}
 	void WriteIndent() {
-		Write(new string('\t', indent));
+		Write(new string(' ', indent * 2));
 	}
 	void INodeVisitor.VisitSelect(Select select) {
 		Write($"new {nameof(Select)}(\n");
@@ -55,7 +55,7 @@ sealed class DebugPrintingVisitor : INodeVisitor {
 			WriteNode(binaryOperation.Left);
 			Write(",\n");
 			WriteIndent();
-			Write(nameof(BinaryOperationType) + "." + binaryOperation.Operator.ToString());
+			Write($"{nameof(BinaryOperationType)}.{binaryOperation.Operator}");
 			Write(",\n");
 			WriteIndent();
 			WriteNode(binaryOperation.Right);
@@ -73,7 +73,7 @@ sealed class DebugPrintingVisitor : INodeVisitor {
 			WriteNode(insert.Into);
 			Write(",\n");
 			WriteIndent();
-			Write($"new List<{nameof(IExpression)}> {{\n");
+			Write($"new {nameof(IExpression)}[] {{\n");
 			{
 				indent += 1;
 				foreach (var value in insert.Values) {

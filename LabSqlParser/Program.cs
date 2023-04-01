@@ -22,76 +22,76 @@ static class Program {
 			}
 		}
 		TestTask();
-		var success_cases = new List<string> {
+		var successCases = new List<string> {
 			"a A 1 ( ) , % / - =",
 			"43 JF",
 			"(),()%-",
 		};
-		var count_passed = 0;
-		for (var i = 0; i < success_cases.Count; ++i) {
-			var source = success_cases[i];
+		var countPassed = 0;
+		for (var i = 0; i < successCases.Count; ++i) {
+			var source = successCases[i];
 			try {
 				var tokens1 = Lexer.GetTokens(source);
 				foreach (var _ in tokens1) {
-					count_passed += 1;
+					countPassed += 1;
 				}
 			}
 			catch (LexerException e) {
 				Console.WriteLine($"Тест {i + 1} не пройден. Запрос `{source}` Ошибка: {e}");
 			}
 		}
-		var failure_cases = new List<string> {
-			"43INSERT",
+		var failureCases = new List<string> {
+			"43!INSERT",
 			"asdf &&&123",
 			"asdf&&&",
 			"&&&asdf",
 		};
-		for (var i = 0; i < failure_cases.Count; ++i) {
-			var source = failure_cases[i];
+		for (var i = 0; i < failureCases.Count; ++i) {
+			var source = failureCases[i];
 			try {
 				var tokens1 = Lexer.GetTokens(source);
 				foreach (var _ in tokens1) {
 					Console.WriteLine();
 				}
-				Console.WriteLine($"Тест {success_cases.Count + i + 1} не пройден. Запрос `{source}` не должен проходить проверку.");
+				Console.WriteLine($"Тест {successCases.Count + i + 1} не пройден. Запрос `{source}` не должен проходить проверку.");
 			}
 			catch (LexerException) {
-				count_passed += 1;
+				countPassed += 1;
 			}
 		}
 	}
 	static void TestParser() {
-		var count_passed = 0;
-		var success_cases = new List<string> {
+		var countPassed = 0;
+		var successCases = new List<string> {
 			"INSERT INTO a VALUES ( 9 )",
 			"INSERT INTO a VALUES ( ( SELECT 1 WHERE 2 ) % (( SELECT 3 ) % (4 / 5)) / 6 - (7 = 8) , 9 )",
 			"INSERT INTO a VALUES ( ((((((((((9)))))))))) )",
 		};
-		for (var i = 0; i < success_cases.Count; ++i) {
-			var source = success_cases[i];
+		for (var i = 0; i < successCases.Count; ++i) {
+			var source = successCases[i];
 			try {
 				Parser.Parse(Lexer.GetTokens(source));
-				count_passed += 1;
+				countPassed += 1;
 			}
 			catch (InvalidOperationException e) {
 				Console.WriteLine($"Тест {i + 1} не пройден. Запрос `{source}` Ошибка: {e}");
 			}
 		}
-		var failure_cases = new List<string> {
+		var failureCases = new List<string> {
 			"INSERT INTO a VALUES (  )",
 			"INSERT INTO a VALUES ( ( SELECT 1 2 ) % , 9 )",
 			"INSERT INTO a VALUES ( 3 % , 9 )",
 			"INSERT INTO a VALUES ( def 9 )",
 			"INSERT INTO a VALUES ( , 9 )",
 		};
-		for (var i = 0; i < failure_cases.Count; ++i) {
-			var source = failure_cases[i];
+		for (var i = 0; i < failureCases.Count; ++i) {
+			var source = failureCases[i];
 			try {
 				Parser.Parse(Lexer.GetTokens(source));
-				Console.WriteLine($"Тест {success_cases.Count + i + 1} не пройден. Запрос `{source}` не должен проходить проверку.");
+				Console.WriteLine($"Тест {successCases.Count + i + 1} не пройден. Запрос `{source}` не должен проходить проверку.");
 			}
 			catch (InvalidOperationException) {
-				count_passed += 1;
+				countPassed += 1;
 			}
 		}
 	}

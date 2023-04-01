@@ -2,6 +2,6 @@
 Expression: Comparison
 Comparison: (Comparison '=')? Additive
 Additive: (Additive '-')? Multiplicative
-Multiplicative: (Multiplicative '%')? Primary | Multiplicative '/' Primary
+Multiplicative: (Multiplicative ('/' | '%'))? Primary
 Primary:  '(' (Select | Expression) ')' | Number | Identifier
 Select: 'SELECT' Expression ('WHERE' Expression)?

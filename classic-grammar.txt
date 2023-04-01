@@ -6,15 +6,15 @@ Comparison: Comparison '=' Additive
 Comparison: Additive
 Additive: Additive '-' Multiplicative
 Additive: Multiplicative
-Multiplicative: Multiplicative '%' Primary
 Multiplicative: Multiplicative '/' Primary
+Multiplicative: Multiplicative '%' Primary
 Multiplicative: Primary
 Primary: '(' Select ')'
+Primary: '(' Expression ')'
 Primary: Number
 Primary: Identifier
-Primary: '(' Expression ')'
 Select: 'SELECT' Expression 'WHERE' Expression
 Select: 'SELECT' Expression
 # Стартовый нетерминал: Insert
-# Нетерминалы: Insert, Expressions, Expression, Comparison, Additive, Multiplicative, Primary, Select
-# Терминалы: 'INSERT', 'INTO', Identifier, 'VALUES', '(', ')', ',', '=', '-', '%', '/', Number, 'SELECT', 'WHERE'
+# Нетерминалы: Insert, Expressions, Expression, Comparison, Additive, ...
+# Терминалы: 'INSERT', 'INTO', Identifier, 'VALUES', '(', ')', ',', ...

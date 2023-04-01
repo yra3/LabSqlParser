@@ -9,20 +9,10 @@ sealed record BinaryOperation(
 		var formattedRight = ExpressionToFormattedString(Right);
 		return formattedLeft + " " + BinaryOperatorToFormattedString() + " " + formattedRight;
 	}
-	string ExpressionToFormattedString(IExpression expression) {
-		var isLowPreсedence = false;
-		if (expression is BinaryOperation operation) {
-			var innerOperator = operation.Operator;
-			isLowPreсedence = OperationPreсedence.GetPreсedence(innerOperator) < OperationPreсedence.GetPreсedence(Operator);
-		}
-		if (isLowPreсedence || expression is Select) {
-			return $"( {expression.ToFormattedString()} )";
-		}
-		else {
-			return expression.ToFormattedString();
-		}
+	static string ExpressionToFormattedString(IExpression expression) {
+		return expression.ToFormattedString();
 	}
-	public string BinaryOperatorToFormattedString() {
+	string BinaryOperatorToFormattedString() {
 		switch (Operator) {
 			case BinaryOperationType.Division:
 				return "/";

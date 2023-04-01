@@ -57,9 +57,9 @@ sealed class Parser {
 		var tableName = ParseIdentifier();
 		Expect("VALUES");
 		Expect("(");
-		var row = ParseExpressions();
+		var values = ParseExpressions();
 		Expect(")");
-		return new Insert(tableName, row);
+		return new Insert(tableName, values);
 	}
 	List<IExpression> ParseExpressions() {
 		var expressions = new List<IExpression> { ParseExpression() };

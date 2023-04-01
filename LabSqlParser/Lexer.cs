@@ -51,7 +51,7 @@ static partial class Lexer {
 	}
 	[GeneratedRegex("""
 		(?<spaces>[ \t\r\n])|
-		(?<identifier>(?<![0-9])[A-Za-z_][A-Za-z0-9_]*)|
+		(?<identifier>[A-Za-z_][A-Za-z0-9_]*)|
 		(?<number>[0-9]+)|
 		(?<punctuator>[,()=/%-])
 		""", RegexOptions.IgnorePatternWhitespace)]
