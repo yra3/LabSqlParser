@@ -3,7 +3,7 @@ sealed record BinaryOperation(
 	IExpression Left,
 	BinaryOperationType Operator,
 	IExpression Right
-	) : IExpression {
+) : IExpression {
 	public string ToFormattedString() {
 		var formattedLeft = ExpressionToFormattedString(Left);
 		var formattedRight = ExpressionToFormattedString(Right);
